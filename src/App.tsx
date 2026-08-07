@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Overlay } from './Overlay';
 import { LoadingScreen } from './LoadingScreen';
-import { NotFound } from './NotFound';
 import './index.css';
 
 const TOTAL_FRAMES = 480;
@@ -15,7 +14,6 @@ export default function App() {
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
-  const [pathname] = useState(window.location.pathname);
 
   useEffect(() => {
     let loadedCount = 0;

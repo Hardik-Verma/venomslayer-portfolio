@@ -1,4 +1,3 @@
-import React from 'react';
 
 export const BlockIcon = ({ className }: { className?: string }) => (
   <svg 
