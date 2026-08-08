@@ -105,16 +105,23 @@ const HomePage = () => {
           </p>
         </motion.div>
 
-        <div className="w-full text-center mt-32 md:mt-48 flex justify-center px-2 sm:px-0">
+        <div className="w-full text-center mt-28 sm:mt-32 md:mt-48 flex justify-center px-2 sm:px-0">
           <motion.h1 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
-            className="text-[16vw] sm:text-[14vw] md:text-[10vw] font-black tracking-tighter uppercase leading-none transform-gpu cursor-default"
+            className="font-black tracking-tighter uppercase leading-none transform-gpu cursor-default"
           >
-            <span 
-              className="bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black"
-            >
+            {/* On mobile: two lines. On md+: single line */}
+            <span className="block md:hidden">
+              <span className="block text-[22vw] bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black leading-[0.9]">
+                VENOM
+              </span>
+              <span className="block text-[22vw] bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black leading-[0.9]">
+                SLAYER_
+              </span>
+            </span>
+            <span className="hidden md:block text-[10vw] bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black">
               VenomSlayer_
             </span>
           </motion.h1>
@@ -201,6 +208,7 @@ const HomePage = () => {
 
 export function Overlay() {
   const [copied, setCopied] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [, setLocation] = useLocation();
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -232,14 +240,16 @@ export function Overlay() {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full flex flex-col sm:flex-row justify-between items-center px-4 sm:px-8 py-6 md:px-16 md:py-10 z-50 text-white transform-gpu gap-4 sm:gap-0 bg-gradient-to-b from-black/90 via-black/50 to-transparent"
+        className="fixed top-0 left-0 w-full flex justify-between items-center px-5 sm:px-8 py-5 md:px-16 md:py-10 z-50 text-white transform-gpu bg-gradient-to-b from-black/90 via-black/50 to-transparent"
       >
-        <a href="/#home" onClick={(e) => handleSmoothScroll(e, '#home')} className="font-black text-[12px] md:text-[14px] tracking-[0.25em] uppercase cursor-pointer group flex items-center">
+        {/* Logo */}
+        <a href="/#home" onClick={(e) => { handleSmoothScroll(e, '#home'); setMenuOpen(false); }} className="font-black text-[12px] md:text-[14px] tracking-[0.25em] uppercase cursor-pointer group flex items-center">
           <span className="text-white tracking-[0.3em]">VENOM</span>
           <span className="text-[#ff3333] group-hover:drop-shadow-[0_0_10px_rgba(255,51,51,0.8)] transition-all duration-300">SLAYER</span>
         </a>
-        
-        <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-4 md:gap-8 text-[8px] md:text-[10px] font-bold tracking-[0.15em] uppercase text-white/50">
+
+        {/* Desktop Nav Links */}
+        <div className="hidden md:flex items-center gap-8 text-[10px] font-bold tracking-[0.15em] uppercase text-white/50">
           <a href="/#home" onClick={(e) => handleSmoothScroll(e, '#home')} className="relative group hover:text-white transition-colors cursor-pointer py-1">Intro<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
           <a href="/#about" onClick={(e) => handleSmoothScroll(e, '#about')} className="relative group hover:text-white transition-colors cursor-pointer py-1">Profile<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
           <a href="/#projects" onClick={(e) => handleSmoothScroll(e, '#projects')} className="relative group hover:text-white transition-colors cursor-pointer py-1">Work<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
@@ -248,7 +258,89 @@ export function Overlay() {
           )}
           <a href="https://client-review-pipeline.onrender.com" target="_blank" rel="noreferrer" className="relative group text-white hover:text-[#ff3333] transition-colors py-1">Review<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
         </div>
+
+        {/* Hamburger Button — mobile only */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-[6px] z-[60] relative"
+          aria-label="Toggle Menu"
+        >
+          <motion.span
+            animate={menuOpen ? { rotate: 45, y: 9 } : { rotate: 0, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="block w-7 h-[2px] bg-white origin-center"
+          />
+          <motion.span
+            animate={menuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+            transition={{ duration: 0.2 }}
+            className="block w-5 h-[2px] bg-[#ff3333] origin-center self-start"
+          />
+          <motion.span
+            animate={menuOpen ? { rotate: -45, y: -9 } : { rotate: 0, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="block w-7 h-[2px] bg-white origin-center"
+          />
+        </button>
       </motion.nav>
+
+      {/* Mobile Fullscreen Menu Overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            key="mobileMenu"
+            initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col justify-center items-start px-8 md:hidden"
+          >
+            {/* Decorative red line */}
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#ff3333] to-transparent" />
+            <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#ff3333]/30 to-transparent" />
+
+            <nav className="flex flex-col gap-2 w-full">
+              {[
+                { label: 'Intro', id: '#home' },
+                { label: 'Profile', id: '#about' },
+                { label: 'Work', id: '#projects' },
+                { label: 'Connect', id: '#contact' },
+              ].map((item, i) => (
+                <motion.a
+                  key={item.label}
+                  href={item.id}
+                  onClick={(e) => { handleSmoothScroll(e as React.MouseEvent<HTMLAnchorElement>, item.id); setMenuOpen(false); }}
+                  initial={{ opacity: 0, x: -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -40 }}
+                  transition={{ duration: 0.4, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                  className="group flex items-center justify-between py-5 border-b border-white/5 cursor-pointer"
+                >
+                  <span className="text-4xl font-black tracking-tighter uppercase text-white/80 group-hover:text-white transition-colors duration-300">
+                    {item.label}
+                  </span>
+                  <span className="text-[#ff3333] text-2xl group-hover:translate-x-2 transition-transform duration-300">→</span>
+                </motion.a>
+              ))}
+              <motion.a
+                href="https://client-review-pipeline.onrender.com"
+                target="_blank"
+                rel="noreferrer"
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.4, delay: 4 * 0.07 }}
+                className="group flex items-center justify-between py-5 border-b border-white/5"
+                onClick={() => setMenuOpen(false)}
+              >
+                <span className="text-4xl font-black tracking-tighter uppercase text-[#ff3333]/80 group-hover:text-[#ff3333] transition-colors duration-300">Review</span>
+                <span className="text-[#ff3333] text-2xl group-hover:translate-x-2 transition-transform duration-300">↗</span>
+              </motion.a>
+            </nav>
+
+            <p className="mt-12 text-[10px] font-bold tracking-[0.3em] uppercase text-white/20">VENOMSLAYER © 2026</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* WOUTER SWITCH AREA */}
       <div className="w-full flex flex-col z-20">
