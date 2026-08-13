@@ -25,7 +25,7 @@ export function LoadingScreen({ progress }: { progress: number }) {
         const text = 'VENOMSLAYER_';
         const glitched = text
           .split('')
-          .map((char, i) => {
+          .map((char, _i) => {
             if (Math.random() < 0.3) {
               return chars[Math.floor(Math.random() * chars.length)];
             }
