@@ -18,27 +18,43 @@ export default function App() {
   useEffect(() => {
     let loadedCount = 0;
     const images: HTMLImageElement[] = [];
+    const startTime = Date.now();
+    const MIN_LOADING_TIME = 2800; // 2.8 seconds minimum for cinematic loading experience
     
+    // Smooth progress lerp interval
+    let currentVirtualProgress = 0;
+    const progressInterval = setInterval(() => {
+      const realProgress = (loadedCount / TOTAL_FRAMES) * 100;
+      if (currentVirtualProgress < realProgress) {
+        currentVirtualProgress += Math.min(5, realProgress - currentVirtualProgress);
+      } else if (currentVirtualProgress < 99 && loadedCount < TOTAL_FRAMES) {
+        currentVirtualProgress += 0.5;
+      }
+      setLoadProgress(Math.floor(currentVirtualProgress));
+    }, 30);
+
     for (let i = 1; i <= TOTAL_FRAMES; i++) {
       const img = new Image();
       const paddedIndex = i.toString().padStart(4, '0');
       img.src = `/webp_frames/frame_${paddedIndex}.webp`;
       
-      img.onload = () => {
-        loadedCount++;
-        setLoadProgress(Math.floor((loadedCount / TOTAL_FRAMES) * 100));
-        
-        if (loadedCount === TOTAL_FRAMES) {
-          setIsLoaded(true);
-        }
-      };
-      
-      img.onerror = () => {
+      const checkComplete = () => {
         loadedCount++;
         if (loadedCount === TOTAL_FRAMES) {
-          setIsLoaded(true);
+          const elapsedTime = Date.now() - startTime;
+          const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
+          setTimeout(() => {
+            clearInterval(progressInterval);
+            setLoadProgress(100);
+            setTimeout(() => {
+              setIsLoaded(true);
+            }, 300);
+          }, remainingTime);
         }
       };
+
+      img.onload = checkComplete;
+      img.onerror = checkComplete;
       
       images.push(img);
     }
@@ -46,6 +62,7 @@ export default function App() {
     imagesRef.current = images;
     
     return () => {
+      clearInterval(progressInterval);
       imagesRef.current = [];
     };
   }, []);
@@ -74,10 +91,14 @@ export default function App() {
 
     const handleScroll = () => {
       const currentScroll = window.scrollY;
-      let maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (maxScroll <= 0) maxScroll = 1;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       
-      scrollRef.current.target = Math.max(0, Math.min(1, currentScroll / maxScroll));
+      // Update progressRef or use a motion value to reflect true scroll percentage
+      // For now, updating a ref that the Overlay component can observe or calculate.
+      // But actually, we need to update the Overlay's scroll state.
+      // The Overlay uses useMotionValue directly.
+      
+      scrollRef.current.target = maxScroll <= 0 ? 0 : Math.max(0, Math.min(1, currentScroll / maxScroll));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

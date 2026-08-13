@@ -220,9 +220,9 @@ export function Overlay() {
 
   useEffect(() => {
     const onScroll = () => {
+      const scrollY = window.scrollY;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      if (max <= 0) return;
-      scrollProgress.set((window.scrollY / max) * 100);
+      scrollProgress.set(max <= 0 ? 0 : (scrollY / max) * 100);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
