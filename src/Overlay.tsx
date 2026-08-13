@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import React, { useState } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { ModrinthIcon } from './ModrinthIcon';
 import { BlockIcon } from './BlockIcon';
@@ -93,39 +93,41 @@ const HomePage = () => {
       className="w-full flex flex-col z-20"
     >
       {/* HERO SECTION */}
-      <section id="home" className="h-screen flex flex-col justify-center relative text-white px-4 sm:px-8 md:px-16">
+      <section id="home" className="h-screen flex flex-col justify-end relative text-white px-4 sm:px-8 md:px-16 pb-24 sm:pb-32 overflow-hidden">
+        {/* Subtitle — top left */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-          className="absolute left-4 sm:left-8 md:left-16 top-1/4 md:top-1/3 max-w-[280px] sm:max-w-sm transform-gpu"
+          className="absolute left-4 sm:left-8 md:left-16 top-28 sm:top-32 md:top-1/3 max-w-[240px] sm:max-w-sm transform-gpu"
         >
           <p className="text-[10px] md:text-sm font-medium text-white/50 leading-relaxed tracking-wide">
             Stop building flat pages. We engineer high-performance, cinematic 3D web environments that defy traditional UI constraints.
           </p>
         </motion.div>
 
-        <div className="w-full text-center mt-28 sm:mt-32 md:mt-48 flex justify-center px-2 sm:px-0">
-          <motion.h1 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
-            className="font-black tracking-tighter uppercase leading-none transform-gpu cursor-default"
-          >
-            {/* On mobile: two lines. On md+: single line */}
-            <span className="block md:hidden">
-              <span className="block text-[22vw] bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black leading-[0.9]">
-                VENOM
-              </span>
-              <span className="block text-[22vw] bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black leading-[0.9]">
-                SLAYER_
-              </span>
+        {/* Hero text — pinned to bottom */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
+          className="font-black tracking-tighter uppercase leading-none transform-gpu cursor-default w-full"
+        >
+          {/* Mobile: two stacked lines */}
+          <span className="block md:hidden">
+            <span className="block text-[23vw] bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black/90 leading-[0.88] pl-1">
+              VENOM
             </span>
-            <span className="hidden md:block text-[10vw] bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black">
-              VenomSlayer_
+            <span className="block text-[23vw] bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black/90 leading-[0.88] pl-1">
+              SLAYER_
             </span>
-          </motion.h1>
-        </div>
+          </span>
+          {/* Desktop: single line centered */}
+          <span className="hidden md:flex justify-center text-[10vw] bg-clip-text text-transparent bg-gradient-to-b from-red-700 via-zinc-500 to-black">
+            VenomSlayer_
+          </span>
+        </motion.h1>
+
         <SectionPagination current="01" total="04" nextId="#about" />
       </section>
 
@@ -209,18 +211,41 @@ const HomePage = () => {
 export function Overlay() {
   const [copied, setCopied] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [wipe, setWipe] = useState(false);
   const [, setLocation] = useLocation();
+
+  // Scroll progress
+  const scrollProgress = useMotionValue(0);
+  const smoothProgress = useSpring(scrollProgress, { stiffness: 200, damping: 30 });
+
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max <= 0) return;
+      scrollProgress.set((window.scrollY / max) * 100);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [scrollProgress]);
+
+  const triggerWipe = useCallback(() => {
+    setWipe(true);
+    setTimeout(() => setWipe(false), 600);
+  }, []);
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
+    triggerWipe();
     if (window.location.pathname !== "/") {
       setLocation("/");
       setTimeout(() => {
         document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      }, 200);
       return;
     }
-    document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+    }, 150);
   };
 
   const copyDiscord = (e: React.MouseEvent) => {
@@ -233,6 +258,26 @@ export function Overlay() {
   return (
     <div className="relative z-10 flex flex-col w-full selection:bg-white selection:text-black" style={{ fontFamily: 'Inter, sans-serif' }}>
       
+      {/* SCROLL PROGRESS BAR */}
+      <motion.div
+        className="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-red-700 to-red-500 z-[9998] shadow-[0_0_8px_rgba(220,38,38,0.6)] pointer-events-none"
+        style={{ width: smoothProgress }}
+      />
+
+      {/* SECTION WIPE FLASH */}
+      <AnimatePresence>
+        {wipe && (
+          <motion.div
+            key="wipe"
+            className="fixed inset-0 z-[9997] pointer-events-none bg-black"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.4, 0] }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+          />
+        )}
+      </AnimatePresence>
+
       <div className="fixed inset-0 pointer-events-none bg-black/10 z-0"></div>
 
       {/* NAVBAR (ALWAYS VISIBLE) */}
@@ -256,7 +301,7 @@ export function Overlay() {
           {window.location.pathname === "/" && (
             <a href="/#contact" onClick={(e) => handleSmoothScroll(e, '#contact')} className="relative group hover:text-white transition-colors cursor-pointer py-1">Connect<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
           )}
-          <a href="https://client-review-pipeline.onrender.com" target="_blank" rel="noreferrer" className="relative group text-white hover:text-[#ff3333] transition-colors py-1">Review<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
+          <a href="https://client-review-pipeline.onrender.com" target="_blank" rel="noreferrer" className="relative group text-white hover:text-[#ff3333] transition-colors py-1">Leave a Review<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
         </div>
 
         {/* Hamburger Button — mobile only */}
@@ -332,7 +377,7 @@ export function Overlay() {
                 className="group flex items-center justify-between py-5 border-b border-white/5"
                 onClick={() => setMenuOpen(false)}
               >
-                <span className="text-4xl font-black tracking-tighter uppercase text-[#ff3333]/80 group-hover:text-[#ff3333] transition-colors duration-300">Review</span>
+                <span className="text-3xl sm:text-4xl font-black tracking-tighter uppercase text-[#ff3333]/80 group-hover:text-[#ff3333] transition-colors duration-300">Leave a Review</span>
                 <span className="text-[#ff3333] text-2xl group-hover:translate-x-2 transition-transform duration-300">↗</span>
               </motion.a>
             </nav>
@@ -369,7 +414,7 @@ export function Overlay() {
                 target="_blank"
                 className="mt-12 sm:mt-16 px-6 sm:px-8 py-3 sm:py-4 rounded-full border border-white/20 bg-white/5 text-white/70 font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[10px] sm:text-xs hover:bg-[#ff3333]/10 hover:text-white hover:border-[#ff3333] hover:shadow-[0_0_30px_rgba(255,51,51,0.2)] transition-all duration-300 transform-gpu inline-block text-center max-w-[80vw]"
               >
-                Leave a Client Review
+                Used our services? Leave a review
               </a>
             </div>
 
