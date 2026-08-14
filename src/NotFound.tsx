@@ -1,6 +1,6 @@
 export function NotFound() {
   return (
-    <div className="w-full h-screen bg-[#030303] flex items-center justify-center p-8">
+    <div className="fixed inset-0 z-[100] bg-[#030303] flex items-center justify-center p-8">
       <div className="text-center">
         <h1 className="text-[120px] md:text-[200px] font-black leading-none text-white mb-8 tracking-tighter">
           404
