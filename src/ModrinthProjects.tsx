@@ -37,7 +37,7 @@ export function ModrinthProjects() {
   }, []);
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full min-h-screen pt-24 pb-24 px-4 sm:px-8 flex flex-col items-center bg-[#030303] text-white">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full min-h-screen pt-24 pb-24 px-4 sm:px-8 flex flex-col items-center bg-black/40 backdrop-blur-sm text-white">
       <div className="w-full max-w-3xl">
         <button onClick={() => { setLocation("/"); setTimeout(() => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' }), 100); }} 
                 className="flex items-center gap-2 text-white/50 hover:text-white transition-colors mb-12 font-mono text-xs uppercase tracking-widest">
