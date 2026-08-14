@@ -5,6 +5,7 @@ import { ModrinthIcon } from './ModrinthIcon';
 import { BlockIcon } from './BlockIcon';
 import { Link, Route, Switch, useLocation } from 'wouter';
 import { ModrinthProjects } from './ModrinthProjects';
+import { NotFound } from './NotFound';
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
