@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { ModrinthIcon } from './ModrinthIcon';
-import { GitBranch, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 
 // Use GitBranch as a substitute for GitHub icon if needed, 
 // or define a custom SVG for GitHub like in other files.
