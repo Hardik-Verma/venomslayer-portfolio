@@ -52,16 +52,16 @@ export function ModrinthProjects() {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.03 }}
-              className="w-full flex items-center justify-between p-8 border-2 border-white hover:border-[#ff2a2a] transition-all text-left group"
+              className="w-full flex items-center justify-between p-8 bg-[#0a0a0a] border border-white/10 hover:border-[#ff2a2a]/50 transition-all text-left group hover:bg-[#0f0f0f] hover:shadow-[0_0_20px_rgba(255,42,42,0.1)]"
             >
               <div>
-                <h3 className="text-xl font-black text-white mb-2 uppercase tracking-tighter group-hover:text-[#ff2a2a]">{project.title}</h3>
+                <h3 className="text-xl font-black text-white mb-2 uppercase tracking-tight group-hover:text-[#ff2a2a] transition-colors">{project.title}</h3>
                 <div className="flex gap-4">
-                  {project.tags.map(t => <span key={t} className="text-[10px] font-mono uppercase tracking-widest text-white/50">{t}</span>)}
+                  {project.tags.map(t => <span key={t} className="text-[10px] font-mono uppercase tracking-widest text-white/40">{t}</span>)}
                 </div>
               </div>
-              <div className="w-10 h-10 border border-white flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
-                <ExternalLink className="w-4 h-4" />
+              <div className="w-12 h-12 border border-white/10 flex items-center justify-center group-hover:border-[#ff2a2a] group-hover:text-[#ff2a2a] transition-all">
+                <ExternalLink className="w-5 h-5" />
               </div>
             </motion.button>
           ))}
@@ -71,15 +71,15 @@ export function ModrinthProjects() {
       <AnimatePresence>
         {selectedProject && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-[#030303] z-50" onClick={() => setSelectedProject(null)} />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-[#030303] border-2 border-white z-50">
-              <div className="flex justify-between items-center p-8 border-b-2 border-white">
-                <h2 className="text-xs font-black uppercase tracking-widest">{selectedProject.title}</h2>
-                <button onClick={() => setSelectedProject(null)}><X className="w-5 h-5" /></button>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-[#030303]/80 backdrop-blur-sm z-50" onClick={() => setSelectedProject(null)} />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-[#0a0a0a] border border-white/20 shadow-2xl z-50">
+              <div className="flex justify-between items-center p-8 border-b border-white/10">
+                <h2 className="text-xs font-black uppercase tracking-widest text-[#ff2a2a]">{selectedProject.title}</h2>
+                <button onClick={() => setSelectedProject(null)} className="text-white hover:text-[#ff2a2a]"><X className="w-5 h-5" /></button>
               </div>
               <div className="grid grid-cols-1">
                 {Object.entries(selectedProject.links).map(([name, url]) => (
-                  <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-8 border-b-2 border-white hover:bg-white hover:text-black transition-all text-xs font-black uppercase tracking-widest">
+                  <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-8 border-b border-white/5 hover:bg-[#111] hover:text-[#ff2a2a] transition-all text-xs font-black uppercase tracking-widest">
                     {name}
                     {name === 'Modrinth' && <ModrinthIcon className="w-4 h-4" />}
                     {name === 'GitHub' && <GithubIcon className="w-4 h-4" />}
