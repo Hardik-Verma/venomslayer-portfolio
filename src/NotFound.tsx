@@ -1,28 +1,23 @@
-import { motion } from 'framer-motion';
-
 export function NotFound() {
   return (
     <div className="fixed inset-0 z-[100] bg-[#030303] flex items-center justify-center p-8">
-      <div className="text-center">
-        {/* Animated Error Code */}
-        <motion.h1 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="text-[120px] md:text-[200px] font-black leading-none text-white mb-8 tracking-tighter"
-        >
+      <div className="text-center w-full max-w-4xl">
+        {/* Massive, bold 404 */}
+        <h1 className="text-[200px] md:text-[300px] font-black leading-[0.8] text-white tracking-tighter mb-4">
           404
-        </motion.h1>
+        </h1>
         
-        <p className="text-sm font-mono text-[#ff2a2a] uppercase tracking-[0.3em] mb-12">
-          Sector not found // System failure
+        {/* High contrast message */}
+        <p className="text-xl md:text-3xl font-black text-[#ff2a2a] uppercase tracking-[0.2em] mb-16 border-t border-b border-[#ff2a2a] py-6">
+          SECTOR NOT FOUND // SYSTEM FAILURE
         </p>
         
+        {/* Sharp, button */}
         <a 
           href="/" 
-          className="inline-block px-10 py-4 bg-white text-[#030303] font-bold text-xs uppercase tracking-[0.2em] hover:bg-[#ff2a2a] hover:text-white transition-all duration-300 transform hover:scale-105"
+          className="inline-block px-12 py-6 bg-white text-[#030303] font-black text-sm uppercase tracking-[0.3em] hover:bg-[#ff2a2a] hover:text-white transition-none border-4 border-white"
         >
-          Return to Base
+          RETURN TO BASE
         </a>
       </div>
     </div>
