@@ -250,10 +250,10 @@ export function Overlay() {
       
       {/* SCROLL PROGRESS BAR */}
       <motion.div
-        className="fixed top-[20%] right-12 h-[60%] w-[6px] bg-white/10 z-[9998] pointer-events-none rounded-full overflow-hidden backdrop-blur-sm"
+        className="fixed top-[20%] right-8 h-[60%] w-[2px] bg-white/10 z-[9998] pointer-events-none rounded-full overflow-hidden"
       >
         <motion.div 
-          className="w-full h-full bg-gradient-to-b from-red-500/80 to-white/90 rounded-full origin-top"
+          className="w-full h-full bg-white rounded-full origin-top"
           style={{ scaleY: scaleX }}
         />
       </motion.div>
