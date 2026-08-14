@@ -1,8 +1,8 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import React, { useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { ModrinthIcon } from './ModrinthIcon';
-import { X, Github, Globe, Box } from 'lucide-react';
+import { Github, Globe } from 'lucide-react';
 
 const CurseForgeIcon = ({ className }: { className?: string }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="currentColor">
