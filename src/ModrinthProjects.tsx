@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { ModrinthIcon } from './ModrinthIcon';
 import { Github, Globe } from 'lucide-react';
