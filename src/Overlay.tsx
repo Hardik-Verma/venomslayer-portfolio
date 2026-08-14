@@ -250,8 +250,8 @@ export function Overlay() {
       
       {/* SCROLL PROGRESS BAR */}
       <motion.div
-        className="fixed top-0 left-0 h-[2px] bg-red-600 z-[9998] pointer-events-none origin-left"
-        style={{ scaleX: scaleX }}
+        className="fixed top-0 right-0 h-full w-[6px] bg-red-600 z-[9998] pointer-events-none origin-top"
+        style={{ scaleY: scaleX }}
       />
 
       {/* SECTION WIPE FLASH */}

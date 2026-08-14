@@ -25,13 +25,20 @@ export default function App() {
     let currentVirtualProgress = 0;
     const progressInterval = setInterval(() => {
       const realProgress = (loadedCount / TOTAL_FRAMES) * 100;
-      if (currentVirtualProgress < realProgress) {
-        currentVirtualProgress += Math.min(5, realProgress - currentVirtualProgress);
-      } else if (currentVirtualProgress < 99 && loadedCount < TOTAL_FRAMES) {
-        currentVirtualProgress += 0.5;
+      
+      // If we are close to 100% but still loading (rare), or loading slow
+      const targetProgress = Math.min(99, realProgress);
+      
+      // Interpolate
+      currentVirtualProgress += (targetProgress - currentVirtualProgress) * 0.05;
+      
+      // Ensure it keeps moving at least a little bit
+      if (currentVirtualProgress < 98) {
+        currentVirtualProgress += 0.2;
       }
+
       setLoadProgress(Math.floor(currentVirtualProgress));
-    }, 30);
+    }, 50); // Slightly slower interval for smoother updates
 
     for (let i = 1; i <= TOTAL_FRAMES; i++) {
       const img = new Image();

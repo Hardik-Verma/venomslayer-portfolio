@@ -18,12 +18,15 @@ export function LoadingScreen({ progress }: { progress: number }) {
         </motion.div>
 
         {/* Professional Loading Bar */}
-        <div className="w-48 h-[2px] bg-white/10 relative overflow-hidden">
-          <motion.div
-            className="absolute top-0 left-0 h-full bg-white"
-            style={{ width: `${progress}%` }}
-            transition={{ type: 'tween', ease: 'linear', duration: 0.1 }}
-          />
+        <div className="flex items-center gap-4">
+          <div className="w-48 h-1 bg-white/10 relative overflow-hidden rounded-full">
+            <motion.div
+              className="absolute top-0 left-0 h-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+              style={{ width: `${progress}%` }}
+              transition={{ type: 'tween', ease: 'linear', duration: 0.2 }}
+            />
+          </div>
+          <span className="text-[10px] text-white/50 font-mono w-8 text-right">{progress}%</span>
         </div>
       </div>
     </motion.div>
