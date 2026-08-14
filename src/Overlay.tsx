@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import React, { useState, useEffect, useCallback } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { ModrinthIcon } from './ModrinthIcon';
@@ -215,18 +215,8 @@ export function Overlay() {
   const [, setLocation] = useLocation();
 
   // Scroll progress
-  const scrollProgress = useMotionValue(0);
-  const smoothProgress = useSpring(scrollProgress, { stiffness: 200, damping: 30 });
-
-  useEffect(() => {
-    const onScroll = () => {
-      const scrollY = window.scrollY;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      scrollProgress.set(max <= 0 ? 0 : (scrollY / max) * 100);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [scrollProgress]);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   const triggerWipe = useCallback(() => {
     setWipe(true);
@@ -260,8 +250,8 @@ export function Overlay() {
       
       {/* SCROLL PROGRESS BAR */}
       <motion.div
-        className="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-red-700 to-red-500 z-[9998] shadow-[0_0_8px_rgba(220,38,38,0.6)] pointer-events-none"
-        style={{ width: smoothProgress }}
+        className="fixed top-0 left-0 h-[2px] bg-red-600 z-[9998] pointer-events-none origin-left"
+        style={{ scaleX: scaleX }}
       />
 
       {/* SECTION WIPE FLASH */}
