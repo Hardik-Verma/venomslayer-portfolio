@@ -17,6 +17,13 @@ const CurseForgeIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const CurseForgeIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="currentColor">
+    <title>CurseForge</title>
+    <path d="M0 0v24h24V0H0zm18.91 16.57c-.24.78-1.25 1.54-2.22 1.83-2.92.88-7.61.2-9.67-2.15-1.42-1.61-1.33-4.04-.42-5.91.43-.88 1.94-3.14 1.94-3.14s-1.34 2.1-1.84 3.01c-.88 1.63-.98 3.55-.17 5.17 1.43 2.87 5.6 3.44 8.67 2.39 1.13-.39 2.13-1.23 2.62-2.31.25-.56.39-1.28.32-1.92-.05-.48-.22-.97-.47-1.38-.28-.46-.7-.88-1.12-1.22-1.54-1.26-3.41-2.19-5.11-3.35-1.07-.73-2.11-1.55-2.98-2.48-.99-1.06-1.74-2.39-1.87-3.83-.16-1.74.52-3.66 1.87-4.83.69-.6 1.55-1.04 2.42-1.26.85-.21 1.82-.22 2.61.12.83.36 1.51 1.05 1.82 1.89.31.86.3 1.84.02 2.7-.27.83-.81 1.56-1.36 2.27 1.35.95 2.81 1.79 4.09 2.82 1.07.87 2.05 1.93 2.49 3.22.45 1.34.42 2.92-.25 4.19z"/>
+  </svg>
+);
+
 const PROJECT_ARCHIVE = [
   { id: "betterchatheads", title: "BETTER CHAT HEADS (FABRIC)", tags: ["Fabric", "Client"], links: { Modrinth: "https://modrinth.com/mod/betterchatheads-fabric", GitHub: "https://github.com/Hardik-Verma/BetterChatHeads" } },
   { id: "betterhitsounds", title: "BETTER HIT SOUNDS", tags: ["Fabric", "Audio"], links: { Modrinth: "https://modrinth.com/mod/betterhitsounds", CurseForge: "https://www.curseforge.com/minecraft/mc-mods/betterhitsounds", GitHub: "https://github.com/Hardik-Verma/BetterHitSounds" } },
