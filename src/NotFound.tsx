@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 export function NotFound() {
   return (
     <div className="fixed inset-0 z-[100] bg-[#030303] flex items-center justify-center p-8 overflow-hidden">
