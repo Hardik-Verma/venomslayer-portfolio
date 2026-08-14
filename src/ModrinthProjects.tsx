@@ -2,7 +2,16 @@ import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { ModrinthIcon } from './ModrinthIcon';
-import { Github, Globe } from 'lucide-react';
+import { GitBranch, Globe } from 'lucide-react';
+
+// Use GitBranch as a substitute for GitHub icon if needed, 
+// or define a custom SVG for GitHub like in other files.
+const GithubIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+  </svg>
+);
+
 
 const CurseForgeIcon = ({ className }: { className?: string }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="currentColor">
@@ -122,7 +131,7 @@ export function ModrinthProjects() {
                 {Object.entries(project.links).map(([name, url]) => (
                   <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-white transition-colors">
                     {name === 'Modrinth' && <ModrinthIcon className="w-3 h-3" />}
-                    {name === 'GitHub' && <Github className="w-3 h-3" />}
+                    {name === 'GitHub' && <GithubIcon className="w-3 h-3" />}
                     {name === 'CurseForge' && <CurseForgeIcon className="w-3 h-3" />}
                     {name === 'Website' && <Globe className="w-3 h-3" />}
                     {name}
