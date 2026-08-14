@@ -32,12 +32,12 @@ export default function App() {
       // Interpolate
       currentVirtualProgress += (targetProgress - currentVirtualProgress) * 0.05;
       
-      // Ensure it keeps moving at least a little bit
-      if (currentVirtualProgress < 98) {
+      // Ensure it keeps moving at least a little bit until it reaches 99
+      if (currentVirtualProgress < 99.5) {
         currentVirtualProgress += 0.2;
       }
 
-      setLoadProgress(Math.floor(currentVirtualProgress));
+      setLoadProgress(Math.floor(Math.min(99, currentVirtualProgress)));
     }, 50); // Slightly slower interval for smoother updates
 
     for (let i = 1; i <= TOTAL_FRAMES; i++) {
