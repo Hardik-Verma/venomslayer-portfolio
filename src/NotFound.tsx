@@ -1,23 +1,23 @@
+import { motion } from 'framer-motion';
+
 export function NotFound() {
   return (
-    <div className="fixed inset-0 z-[100] bg-[#030303] flex items-center justify-center p-8">
-      <div className="text-center w-full max-w-4xl">
-        {/* Massive, bold 404 */}
-        <h1 className="text-[200px] md:text-[300px] font-black leading-[0.8] text-white tracking-tighter mb-4">
+    <div className="fixed inset-0 z-[100] bg-[#030303] flex items-center justify-center p-8 overflow-hidden">
+      {/* Cinematic Background Glow */}
+      <div className="absolute w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,#ff2a2a15,transparent_65%)] blur-3xl pointer-events-none" />
+      
+      <div className="relative z-10 text-center max-w-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-16 rounded-3xl shadow-2xl">
+        <h1 className="text-[120px] md:text-[160px] font-black leading-none text-white tracking-tighter mb-4">
           404
         </h1>
-        
-        {/* High contrast message */}
-        <p className="text-xl md:text-3xl font-black text-[#ff2a2a] uppercase tracking-[0.2em] mb-16 border-t border-b border-[#ff2a2a] py-6">
-          SECTOR NOT FOUND // SYSTEM FAILURE
+        <p className="text-sm font-mono text-white/50 uppercase tracking-[0.3em] mb-12">
+          Sector not found // System failure
         </p>
-        
-        {/* Sharp, button */}
         <a 
           href="/" 
-          className="inline-block px-12 py-6 bg-white text-[#030303] font-black text-sm uppercase tracking-[0.3em] hover:bg-[#ff2a2a] hover:text-white transition-none border-4 border-white"
+          className="inline-block px-10 py-4 bg-white/5 hover:bg-white text-white hover:text-black font-bold text-xs uppercase tracking-[0.2em] transition-all duration-300 border border-white/20"
         >
-          RETURN TO BASE
+          Return to Base
         </a>
       </div>
     </div>

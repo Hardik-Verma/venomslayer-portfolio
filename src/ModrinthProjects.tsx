@@ -52,16 +52,16 @@ export function ModrinthProjects() {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.03 }}
-              className="w-full flex items-center justify-between p-8 bg-[#0a0a0a] border-2 border-white hover:border-[#ff2a2a] transition-none text-left group"
+              className="w-full flex items-center justify-between p-8 bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl hover:bg-white/[0.06] hover:border-white/20 transition-all duration-300 text-left group"
             >
               <div>
-                <h3 className="text-2xl font-black text-white mb-3 uppercase tracking-tighter group-hover:text-[#ff2a2a]">{project.title}</h3>
+                <h3 className="text-xl font-black text-white mb-2 uppercase tracking-tight group-hover:text-[#ff2a2a] transition-colors">{project.title}</h3>
                 <div className="flex gap-4">
-                  {project.tags.map(t => <span key={t} className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/50 bg-white/10 px-2 py-1">{t}</span>)}
+                  {project.tags.map(t => <span key={t} className="text-[10px] font-mono uppercase tracking-widest text-white/50">{t}</span>)}
                 </div>
               </div>
-              <div className="w-12 h-12 border-2 border-white flex items-center justify-center group-hover:bg-[#ff2a2a] group-hover:border-[#ff2a2a] transition-none">
-                <ExternalLink className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 border border-white/10 flex items-center justify-center rounded-full group-hover:border-[#ff2a2a] group-hover:text-[#ff2a2a] transition-all">
+                <ExternalLink className="w-5 h-5" />
               </div>
             </motion.button>
           ))}
@@ -71,15 +71,15 @@ export function ModrinthProjects() {
       <AnimatePresence>
         {selectedProject && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-[#030303]/95 z-50" onClick={() => setSelectedProject(null)} />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-[#030303] border-4 border-white z-50">
-              <div className="flex justify-between items-center p-8 border-b-4 border-white">
-                <h2 className="text-sm font-black uppercase tracking-widest text-[#ff2a2a]">{selectedProject.title}</h2>
-                <button onClick={() => setSelectedProject(null)} className="text-white hover:text-[#ff2a2a]"><X className="w-6 h-6" /></button>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" onClick={() => setSelectedProject(null)} />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-[#030303]/90 backdrop-blur-2xl border border-white/20 rounded-2xl z-50">
+              <div className="flex justify-between items-center p-8 border-b border-white/10">
+                <h2 className="text-sm font-black uppercase tracking-widest text-white">{selectedProject.title}</h2>
+                <button onClick={() => setSelectedProject(null)} className="text-white hover:text-[#ff2a2a]"><X className="w-5 h-5" /></button>
               </div>
               <div className="grid grid-cols-1">
                 {Object.entries(selectedProject.links).map(([name, url]) => (
-                  <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-8 border-b-2 border-white hover:bg-white hover:text-[#030303] transition-none text-xs font-black uppercase tracking-[0.2em]">
+                  <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-8 border-b border-white/5 hover:bg-white/5 hover:text-[#ff2a2a] transition-all text-xs font-bold uppercase tracking-widest">
                     {name}
                     {name === 'Modrinth' && <ModrinthIcon className="w-4 h-4" />}
                     {name === 'GitHub' && <GithubIcon className="w-4 h-4" />}
