@@ -171,9 +171,10 @@ export default function App() {
         {!isLoaded && <LoadingScreen progress={loadProgress} />}
       </AnimatePresence>
 
+      {/* Background 3D Layer - Always render to show behind everything else */}
       <canvas
         ref={canvasRef}
-        className="fixed top-0 left-0 w-full h-full object-cover z-0 pointer-events-none transform-gpu animate-idle-breathe"
+        className="fixed top-0 left-0 w-full h-full object-cover z-0 pointer-events-none transform-gpu"
       />
 
       <div className="fixed inset-0 z-[5] pointer-events-none transform-gpu">
