@@ -386,8 +386,7 @@ export function Overlay() {
         <Switch>
           <Route path="/" component={HomePage} />
           <Route path="/modrinth-projects" component={ModrinthProjects} />
-          {/* Default fallback to Home */}
-          <Route component={HomePage} />
+          <Route component={NotFound} />
         </Switch>
 
         {/* FOOTER (ONLY ON HOME) */}

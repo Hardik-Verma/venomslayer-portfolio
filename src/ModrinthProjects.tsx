@@ -12,6 +12,7 @@ const GithubIcon = ({ className }: { className?: string }) => (
 
 const CurseForgeIcon = ({ className }: { className?: string }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="currentColor">
+    <title>CurseForge</title>
     <path d="M0 0v24h24V0H0zm18.91 16.57c-.24.78-1.25 1.54-2.22 1.83-2.92.88-7.61.2-9.67-2.15-1.42-1.61-1.33-4.04-.42-5.91.43-.88 1.94-3.14 1.94-3.14s-1.34 2.1-1.84 3.01c-.88 1.63-.98 3.55-.17 5.17 1.43 2.87 5.6 3.44 8.67 2.39 1.13-.39 2.13-1.23 2.62-2.31.25-.56.39-1.28.32-1.92-.05-.48-.22-.97-.47-1.38-.28-.46-.7-.88-1.12-1.22-1.54-1.26-3.41-2.19-5.11-3.35-1.07-.73-2.11-1.55-2.98-2.48-.99-1.06-1.74-2.39-1.87-3.83-.16-1.74.52-3.66 1.87-4.83.69-.6 1.55-1.04 2.42-1.26.85-.21 1.82-.22 2.61.12.83.36 1.51 1.05 1.82 1.89.31.86.3 1.84.02 2.7-.27.83-.81 1.56-1.36 2.27 1.35.95 2.81 1.79 4.09 2.82 1.07.87 2.05 1.93 2.49 3.22.45 1.34.42 2.92-.25 4.19z"/>
   </svg>
 );
@@ -36,30 +37,30 @@ export function ModrinthProjects() {
   }, []);
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full min-h-screen pt-24 pb-24 px-4 sm:px-8 flex flex-col items-center text-white">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full min-h-screen pt-24 pb-24 px-4 sm:px-8 flex flex-col items-center bg-[#030303] text-white">
       <div className="w-full max-w-3xl">
         <button onClick={() => { setLocation("/"); setTimeout(() => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' }), 100); }} 
                 className="flex items-center gap-2 text-white/50 hover:text-white transition-colors mb-12 font-mono text-xs uppercase tracking-widest">
           &larr; Back to Base
         </button>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           {PROJECT_ARCHIVE.map((project, i) => (
             <motion.button
               key={project.id}
               onClick={() => setSelectedProject(project)}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className="w-full flex items-center justify-between p-6 bg-white/[0.02] border border-white/5 rounded-xl hover:bg-white/[0.05] hover:border-white/10 transition-all text-left"
+              transition={{ delay: i * 0.03 }}
+              className="w-full flex items-center justify-between p-6 border border-white/10 hover:border-white transition-all text-left"
             >
               <div>
-                <h3 className="text-lg font-bold text-white mb-1">{project.title}</h3>
+                <h3 className="text-sm font-bold text-white mb-1 uppercase tracking-wider">{project.title}</h3>
                 <div className="flex gap-2">
-                  {project.tags.map(t => <span key={t} className="text-[10px] uppercase tracking-widest text-white/30">{t}</span>)}
+                  {project.tags.map(t => <span key={t} className="text-[9px] uppercase tracking-widest text-white/30">{t}</span>)}
                 </div>
               </div>
-              <ExternalLink className="w-4 h-4 text-white/20" />
+              <ExternalLink className="w-3 h-3 text-white/20" />
             </motion.button>
           ))}
         </div>
@@ -68,20 +69,20 @@ export function ModrinthProjects() {
       <AnimatePresence>
         {selectedProject && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50" onClick={() => setSelectedProject(null)} />
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 z-50">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-bold">{selectedProject.title}</h2>
-                <button onClick={() => setSelectedProject(null)}><X className="w-5 h-5 text-white/50" /></button>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-[#030303]/90 z-50" onClick={() => setSelectedProject(null)} />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-[#030303] border border-white z-50">
+              <div className="flex justify-between items-center p-6 border-b border-white/10">
+                <h2 className="text-xs font-bold uppercase tracking-widest">{selectedProject.title}</h2>
+                <button onClick={() => setSelectedProject(null)}><X className="w-4 h-4" /></button>
               </div>
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1">
                 {Object.entries(selectedProject.links).map(([name, url]) => (
-                  <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all text-sm font-medium">
+                  <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 border-b border-white/10 hover:bg-white/5 transition-all text-xs font-bold uppercase tracking-widest">
                     {name}
-                    {name === 'Modrinth' && <ModrinthIcon className="w-4 h-4" />}
-                    {name === 'GitHub' && <GithubIcon className="w-4 h-4" />}
-                    {name === 'CurseForge' && <CurseForgeIcon className="w-4 h-4" />}
-                    {name === 'Website' && <Globe className="w-4 h-4" />}
+                    {name === 'Modrinth' && <ModrinthIcon className="w-3 h-3" />}
+                    {name === 'GitHub' && <GithubIcon className="w-3 h-3" />}
+                    {name === 'CurseForge' && <CurseForgeIcon className="w-3 h-3" />}
+                    {name === 'Website' && <Globe className="w-3 h-3" />}
                   </a>
                 ))}
               </div>
