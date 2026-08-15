@@ -15,7 +15,7 @@ export function NotFound() {
         
         <a 
           href="/" 
-          className="inline-block px-8 py-3 bg-transparent border border-white/20 text-white font-bold text-xs uppercase tracking-[0.2em] hover:bg-[#ff2a2a] hover:border-[#ff2a2a] hover:text-white transition-all duration-300"
+          className="inline-block px-10 py-4 rounded-full border border-white/20 bg-white/5 text-white font-bold text-xs uppercase tracking-[0.2em] hover:bg-[#ff2a2a]/20 hover:border-[#ff2a2a] hover:text-white transition-all duration-500 backdrop-blur-sm"
         >
           Return to Base
         </a>
