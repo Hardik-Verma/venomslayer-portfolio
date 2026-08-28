@@ -296,7 +296,7 @@ export function Overlay() {
           {window.location.pathname === "/" && (
             <a href="/#contact" onClick={(e) => handleSmoothScroll(e, '#contact')} className="relative group hover:text-white transition-colors cursor-pointer py-1">Connect<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
           )}
-          <a href="https://client-review-pipeline.onrender.com" target="_blank" rel="noreferrer" className="relative group text-white hover:text-[#ff3333] transition-colors py-1">Leave a Review<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
+          <a href="https://review.venomslayer.in" target="_blank" rel="noreferrer" className="relative group text-white hover:text-[#ff3333] transition-colors py-1">Leave a Review<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
         </div>
 
         {/* Hamburger Button — mobile only */}
@@ -362,7 +362,7 @@ export function Overlay() {
                 </motion.a>
               ))}
               <motion.a
-                href="https://client-review-pipeline.onrender.com"
+                href="https://review.venomslayer.in"
                 target="_blank"
                 rel="noreferrer"
                 initial={{ opacity: 0, x: -40 }}
@@ -404,7 +404,7 @@ export function Overlay() {
               </a>
               
               <a 
-                href="https://client-review-pipeline.onrender.com" 
+                href="https://review.venomslayer.in" 
                 target="_blank"
                 className="mt-12 sm:mt-16 px-6 sm:px-8 py-3 sm:py-4 rounded-full border border-white/20 bg-white/5 text-white/70 font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[10px] sm:text-xs hover:bg-[#ff3333]/10 hover:text-white hover:border-[#ff3333] hover:shadow-[0_0_30px_rgba(255,51,51,0.2)] transition-all duration-300 transform-gpu inline-block text-center max-w-[80vw]"
               >
