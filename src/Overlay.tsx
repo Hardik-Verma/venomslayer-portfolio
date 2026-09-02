@@ -293,6 +293,7 @@ export function Overlay() {
           <a href="/#home" onClick={(e) => handleSmoothScroll(e, '#home')} className="relative group hover:text-white transition-colors cursor-pointer py-1">Intro<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
           <a href="/#about" onClick={(e) => handleSmoothScroll(e, '#about')} className="relative group hover:text-white transition-colors cursor-pointer py-1">Profile<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
           <a href="/#projects" onClick={(e) => handleSmoothScroll(e, '#projects')} className="relative group hover:text-white transition-colors cursor-pointer py-1">Work<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
+          <a href="/social" className="relative group hover:text-white transition-colors cursor-pointer py-1">Socials<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
           {window.location.pathname === "/" && (
             <a href="/#contact" onClick={(e) => handleSmoothScroll(e, '#contact')} className="relative group hover:text-white transition-colors cursor-pointer py-1">Connect<span className="absolute bottom-0 left-0 w-0 h-px bg-[#ff3333] group-hover:w-full transition-all duration-300"></span></a>
           )}
@@ -361,6 +362,18 @@ export function Overlay() {
                   <span className="text-[#ff3333] text-2xl group-hover:translate-x-2 transition-transform duration-300">→</span>
                 </motion.a>
               ))}
+              <motion.a
+                href="/social"
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.4, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="group flex items-center justify-between py-5 border-b border-white/5 cursor-pointer"
+                onClick={() => setMenuOpen(false)}
+              >
+                <span className="text-4xl font-black tracking-tighter uppercase text-white/80 group-hover:text-white transition-colors duration-300">Socials</span>
+                <span className="text-[#ff3333] text-2xl group-hover:translate-x-2 transition-transform duration-300">→</span>
+              </motion.a>
               <motion.a
                 href="https://review.venomslayer.in"
                 target="_blank"
