@@ -1,0 +1,9 @@
+# Rewrites
+/social    /social.html    200
+/discord   /discord.html   200
+
+# Redirects
+/github    https://github.com/Hardik-Verma    301
+/modrinth  https://modrinth.com/user/_Pheonix 301
+/twitter   https://x.com/HardikV07715758      301
+/instagram https://instagram.com/venomslayer__ 301

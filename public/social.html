@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social // VenomSlayer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        body { font-family: 'JetBrains Mono', monospace; }
+        .cyber-card {
+            transition: all 0.3s ease;
+        }
+        .cyber-card:hover {
+            border-color: #ef4444;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-[#030303] text-[#a1a1aa] min-h-screen flex flex-col items-center justify-center p-6">
+    <nav class="fixed top-0 left-0 w-full flex justify-between items-center px-8 py-8 z-50">
+        <a href="/" class="text-white font-black text-xs tracking-[0.3em] uppercase">VENOMSLAYER</a>
+        <a href="/" class="text-[10px] uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors">Return to Base</a>
+    </nav>
+    
+    <main class="w-full max-w-sm pt-20">
+        <header class="text-center mb-16">
+            <h1 class="text-white text-xl font-bold tracking-[0.4em] uppercase mb-2">VenomSlayer</h1>
+            <p class="text-[10px] tracking-[0.2em] uppercase">Digital Infrastructure</p>
+        </header>
+
+        <div class="grid gap-4">
+            <a href="/github" class="cyber-card block w-full p-4 border border-white/10 hover:text-white text-center uppercase tracking-widest text-xs">GitHub</a>
+            <a href="/modrinth" class="cyber-card block w-full p-4 border border-white/10 hover:text-white text-center uppercase tracking-widest text-xs">Modrinth</a>
+            <a href="/twitter" class="cyber-card block w-full p-4 border border-white/10 hover:text-white text-center uppercase tracking-widest text-xs">Twitter / X</a>
+            <a href="/instagram" class="cyber-card block w-full p-4 border border-white/10 hover:text-white text-center uppercase tracking-widest text-xs">Instagram</a>
+            <a href="/discord" class="cyber-card block w-full p-4 border border-white/10 hover:text-white text-center uppercase tracking-widest text-xs">Discord</a>
+        </div>
+    </main>
+
+    <footer class="fixed bottom-0 left-0 w-full p-8 text-center text-[8px] uppercase tracking-[0.2em] text-white/20">
+        © 2026 VenomSlayer
+    </footer>
+</body>
+</html>
