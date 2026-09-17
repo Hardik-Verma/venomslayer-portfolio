@@ -411,7 +411,7 @@ export function Overlay() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_100%,#ff333315,transparent)] pointer-events-none"></div>
             
             <div className="flex flex-col items-center justify-center flex-1 text-center w-full mt-16 sm:mt-0 relative z-10">
-              <a href="mailto:hardikverma1902@gmail.com" className="group block w-full">
+              <a href="mailto:work@venomslayer.in" className="group block w-full">
                 <AnimatedText text="LET'S CONNECT" className="text-[14vw] sm:text-[12vw] md:text-[8vw] font-black tracking-tighter leading-none uppercase text-white/80 group-hover:text-white transition-colors duration-500 break-words" />
                 <div className="h-1 w-0 group-hover:w-full bg-[#ff3333] transition-all duration-700 ease-[0.16,1,0.3,1] mx-auto mt-6 sm:mt-8 shadow-[0_0_20px_rgba(255,51,51,0.5)]"></div>
               </a>
