@@ -75,6 +75,18 @@ export function Testimonials() {
                 {review.standout && (
                   <p className="text-white/40 text-[10px] uppercase tracking-widest">{review.standout}</p>
                 )}
+                <div className="flex flex-wrap items-center gap-2 mt-2">
+                  {review.quality && (
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#ff3333] border border-[#ff3333]/30 bg-[#ff3333]/10 rounded-full px-2.5 py-0.5">
+                      {review.quality}
+                    </span>
+                  )}
+                  {review.createdAt && (
+                    <span className="text-[9px] uppercase tracking-widest text-white/30">
+                      {new Date(review.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>
