@@ -1,11 +1,12 @@
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
-import React, { useState, useCallback } from 'react';
-import { MessageSquare } from 'lucide-react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { MessageSquare, ArrowUp } from 'lucide-react';
 import { ModrinthIcon } from './ModrinthIcon';
 import { BlockIcon } from './BlockIcon';
 import { Link, Route, Switch, useLocation } from 'wouter';
 import { ModrinthProjects } from './ModrinthProjects';
 import { NotFound } from './NotFound';
+import { Testimonials } from './Testimonials';
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -55,21 +56,21 @@ const SectionPagination = ({ current, total, nextId, isLast = false }: { current
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-      className="absolute bottom-12 left-0 w-full px-8 md:px-16 flex justify-between items-end pointer-events-none transform-gpu"
+      className="absolute bottom-6 sm:bottom-12 left-0 w-full px-4 sm:px-8 md:px-16 flex justify-between items-end pointer-events-none transform-gpu"
     >
-      <a href={nextId} onClick={(e) => handleSmoothScroll(e, nextId)} className="pointer-events-auto text-xs font-bold tracking-[0.2em] uppercase hover:text-[#ff3333] transition-colors flex items-center gap-2 group text-white/50">
+      <a href={nextId} onClick={(e) => handleSmoothScroll(e, nextId)} className="pointer-events-auto text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase hover:text-[#ff3333] transition-colors flex items-center gap-2 group text-white/50">
         {isLast ? "Back to top" : "Explore"} 
         <span className="transform-gpu group-hover:translate-x-1 transition-transform">
           {isLast ? "↑" : "->"}
         </span>
       </a>
 
-      <div className="absolute left-1/2 bottom-0 transform-gpu -translate-x-1/2 text-[10px] font-bold tracking-[0.3em] text-white/30">
+      <div className="hidden sm:block absolute left-1/2 bottom-0 transform-gpu -translate-x-1/2 text-[10px] font-bold tracking-[0.3em] text-white/30">
         <span className="text-white">{current}</span> / {total}
       </div>
 
-      <a href={nextId} onClick={(e) => handleSmoothScroll(e, nextId)} className="pointer-events-auto group block cursor-pointer">
-        <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center transform-gpu group-hover:scale-105 group-hover:border-[#ff3333] transition-all duration-300">
+      <a href={nextId} onClick={(e) => handleSmoothScroll(e, nextId)} className="pointer-events-auto group block cursor-pointer shrink-0">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center transform-gpu group-hover:scale-105 group-hover:border-[#ff3333] transition-all duration-300">
           <svg className="w-5 h-5 text-white/30 group-hover:text-[#ff3333] transform-gpu group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {isLast ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
@@ -94,7 +95,7 @@ const HomePage = () => {
       className="w-full flex flex-col z-20"
     >
       {/* HERO SECTION */}
-      <section id="home" className="h-screen flex flex-col justify-end relative text-white px-4 sm:px-8 md:px-16 pb-24 sm:pb-32 overflow-hidden">
+      <section id="home" className="h-svh flex flex-col justify-end relative text-white px-4 sm:px-8 md:px-16 pb-24 sm:pb-32 overflow-hidden">
         {/* Subtitle — top left */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -165,7 +166,7 @@ const HomePage = () => {
       </section>
 
       {/* PROJECTS SECTION WITH ROUTER LINK */}
-      <section id="projects" className="min-h-screen flex flex-col justify-center items-center relative text-white px-4 sm:px-8 md:px-16 py-24 sm:py-32 bg-black/60">
+      <section id="projects" className="min-h-svh flex flex-col justify-center items-center relative text-white px-4 sm:px-8 md:px-16 py-24 sm:py-32 bg-black/60 w-full overflow-x-clip">
         <div className="mb-16 sm:mb-24 text-center w-full px-2">
           <AnimatedText text="SELECTED WORKS" className="text-[12vw] sm:text-[8vw] md:text-[6vw] font-black tracking-tighter leading-[0.8] uppercase text-white break-words" />
         </div>
@@ -200,8 +201,11 @@ const HomePage = () => {
                 </div>
               </a>
             </Link>
-          </motion.div>
+            </motion.div>
         </div>
+
+        {/* Client testimonials — published from the review admin panel, NOT part of Minecraft Mods */}
+        <Testimonials />
 
         <SectionPagination current="03" total="04" nextId="#contact" />
       </section>
@@ -213,7 +217,15 @@ export function Overlay() {
   const [copied, setCopied] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [wipe, setWipe] = useState(false);
+  const [showTop, setShowTop] = useState(false);
   const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 600);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Scroll progress
   const { scrollYProgress } = useScroll();
@@ -258,6 +270,24 @@ export function Overlay() {
           style={{ scaleY: scaleX }}
         />
       </motion.div>
+
+      {/* SCROLL TO TOP BUTTON (ALL PAGES, ALL RESOLUTIONS) */}
+      <AnimatePresence>
+        {showTop && (
+          <motion.button
+            key="scroll-top"
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 10 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Back to top"
+            className="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-[9998] w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-white/15 bg-black/60 backdrop-blur-md flex items-center justify-center text-white/60 hover:text-white hover:border-[#ff3333] hover:shadow-[0_0_25px_rgba(255,51,51,0.35)] transition-colors cursor-pointer"
+          >
+            <ArrowUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* SECTION WIPE FLASH */}
       <AnimatePresence>
@@ -405,7 +435,7 @@ export function Overlay() {
 
         {/* FOOTER (ONLY ON HOME) */}
         {window.location.pathname === "/" && (
-          <section id="contact" className="min-h-screen flex flex-col justify-center px-4 sm:px-8 md:px-16 py-24 sm:py-32 bg-black/90 text-white relative overflow-hidden">
+          <section id="contact" className="min-h-svh flex flex-col justify-center px-4 sm:px-8 md:px-16 py-24 sm:py-32 bg-black/90 text-white relative overflow-hidden w-full overflow-x-clip">
             {/* Cinematic Background Elements */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
             <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_100%,#ff333315,transparent)] pointer-events-none"></div>

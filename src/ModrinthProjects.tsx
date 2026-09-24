@@ -18,14 +18,8 @@ const CurseForgeIcon = ({ className }: { className?: string }) => (
 );
 
 const PROJECT_ARCHIVE = [
-  { id: "betterchatheads", title: "BETTER CHAT HEADS (FABRIC)", tags: ["Fabric", "Client"], links: { Modrinth: "https://modrinth.com/mod/betterchatheads-fabric", GitHub: "https://github.com/Hardik-Verma/BetterChatHeads" } },
   { id: "betterhitsounds", title: "BETTER HIT SOUNDS", tags: ["Fabric", "Audio"], links: { Modrinth: "https://modrinth.com/mod/betterhitsounds", CurseForge: "https://www.curseforge.com/minecraft/mc-mods/betterhitsounds", GitHub: "https://github.com/Hardik-Verma/BetterHitSounds" } },
-  { id: "blockbrain", title: "BLOCKBRAIN (MINECRAFT AI COMPANION)", tags: ["Fabric", "AI", "Core"], links: { Modrinth: "https://modrinth.com/mod/blockbrain-minecraft-ai-companion", CurseForge: "https://www.curseforge.com/minecraft/mc-mods/blockbrain-ai-companion", GitHub: "https://github.com/Hardik-Verma/blockbrain", Website: "https://blockbrain.great-site.net" } },
-  { id: "customgameicon", title: "CUSTOM GAME ICON", tags: ["Fabric", "Client"], links: { Modrinth: "https://modrinth.com/mod/customgameicon", GitHub: "https://github.com/Hardik-Verma/CustomGameIcon" } },
-  { id: "macebot", title: "MACEBOT", tags: ["Fabric", "AI", "Combat"], links: { Modrinth: "https://modrinth.com/mod/macebot", GitHub: "https://github.com/katch0420/MaceBot" } },
-  { id: "smartcrosshair", title: "SMART CROSSHAIR", tags: ["Fabric", "UI"], links: { Modrinth: "https://modrinth.com/mod/smartcrosshair", GitHub: "https://github.com/Hardik-Verma/SmartCrosshair" } },
-  { id: "trialstats", title: "TRIALSTATS", tags: ["Fabric", "Utility"], links: { Modrinth: "https://modrinth.com/mod/trialstats", GitHub: "https://github.com/Hardik-Verma/TrialStats", Website: "https://trialtracker.wuaze.com" } },
-  { id: "zyrenauth", title: "ZYRENAUTH", tags: ["Plugin", "Security"], links: { Modrinth: "https://modrinth.com/plugin/zyrenauth", GitHub: "https://github.com/Hardik-Verma/ZyrenAuth" } }
+  { id: "macebot", title: "MACEBOT", tags: ["Fabric", "AI", "Combat"], links: { Modrinth: "https://modrinth.com/mod/macebot", GitHub: "https://github.com/katch0420/MaceBot" } }
 ];
 
 export function ModrinthProjects() {
