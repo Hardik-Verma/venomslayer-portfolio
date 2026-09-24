@@ -9,6 +9,7 @@ interface PublishedReview {
   rating: number;
   standout: string;
   quality: string;
+  imageUrl: string | null;
   createdAt: string | null;
 }
 
@@ -53,8 +54,18 @@ export function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: (i % 3) * 0.08 }}
-            className="flex flex-col p-6 sm:p-8 bg-black/60 backdrop-blur-xl border border-white/10 rounded-3xl hover:border-[#ff3333]/40 transition-all duration-500 transform-gpu hover:-translate-y-1"
+            className="flex flex-col p-6 sm:p-8 bg-black/60 backdrop-blur-xl border border-white/10 rounded-3xl hover:border-[#ff3333]/40 transition-all duration-500 transform-gpu hover:-translate-y-1 overflow-hidden"
           >
+            {review.imageUrl && (
+              <div className="-mx-6 -mt-6 sm:-mx-8 sm:-mt-8 mb-6 border-b border-white/10">
+                <img
+                  src={review.imageUrl}
+                  alt={`Attachment from ${review.name}`}
+                  loading="lazy"
+                  className="w-full h-44 object-cover"
+                />
+              </div>
+            )}
             <div className="flex gap-1 mb-4">
               {[...Array(5)].map((_, s) => (
                 <Star
