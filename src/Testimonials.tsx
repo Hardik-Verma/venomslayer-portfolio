@@ -19,13 +19,25 @@ export function Testimonials() {
 
   useEffect(() => {
     const fetchPublished = async () => {
+      if (import.meta.env.DEV) {
+        setLoaded(true);
+        return;
+      }
+
       try {
-        const res = await fetch('https://review.venomslayer.in/api/reviews/published');
+        const res = await fetch('https://review.venomslayer.in/api/reviews/published', {
+          mode: 'cors',
+          headers: { Accept: 'application/json' }
+        });
         if (!res.ok) throw new Error('Failed to fetch testimonials');
         const data = await res.json();
         setReviews(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error(err);
+        if (import.meta.env.DEV) {
+          setReviews([]);
+        } else {
+          console.warn('Published review feed unavailable:', err);
+        }
       } finally {
         setLoaded(true);
       }

@@ -180,7 +180,7 @@ const HomePage = () => {
             className="w-full flex justify-center transform-gpu"
           >
             {/* Distinct Trigger Card as a Link */}
-            <Link href="/modrinth-projects">
+            <Link href="/modrinth-projects" asChild>
               <a className="group relative w-full max-w-2xl h-64 sm:h-80 md:h-96 p-6 sm:p-12 md:p-16 flex flex-col items-center justify-center text-center bg-black/60 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden hover:border-[#ff3333]/40 transition-all duration-700 transform-gpu cursor-pointer hover:shadow-[0_0_80px_rgba(255,51,51,0.15)] hover:-translate-y-2">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-[#ff3333]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[#ff3333]/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
