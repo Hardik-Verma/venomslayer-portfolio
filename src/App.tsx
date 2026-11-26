@@ -16,60 +16,79 @@ export default function App() {
   const [loadProgress, setLoadProgress] = useState(0);
 
   useEffect(() => {
-    let loadedCount = 0;
+    let resolvedFrames = 0;
+    let documentReady = document.readyState === 'complete';
+    let fontsReady = !document.fonts || document.fonts.status === 'loaded';
+    let finished = false;
+    let finishTimer: number | undefined;
+    const startedAt = performance.now();
     const images: HTMLImageElement[] = [];
-    const startTime = Date.now();
-    const MIN_LOADING_TIME = 2800; // 2.8 seconds minimum for cinematic loading experience
-    
-    // Smooth progress lerp interval
-    let currentVirtualProgress = 0;
-    const progressInterval = setInterval(() => {
-      const realProgress = (loadedCount / TOTAL_FRAMES) * 100;
-      
-      // If we are close to 100% but still loading (rare), or loading slow
-      const targetProgress = Math.min(99, realProgress);
-      
-      // Interpolate
-      currentVirtualProgress += (targetProgress - currentVirtualProgress) * 0.05;
-      
-      // Ensure it keeps moving at least a little bit until it reaches 99
-      if (currentVirtualProgress < 99.5) {
-        currentVirtualProgress += 0.2;
-      }
 
-      setLoadProgress(Math.floor(Math.min(99, currentVirtualProgress)));
-    }, 50); // Slightly slower interval for smoother updates
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(watchdog);
+      setLoadProgress(100);
+
+      const remainingMinimum = Math.max(0, 480 - (performance.now() - startedAt));
+      finishTimer = window.setTimeout(() => setIsLoaded(true), remainingMinimum);
+    };
+
+    const updateProgress = () => {
+      const frameProgress = (resolvedFrames / TOTAL_FRAMES) * 86;
+      const documentProgress = documentReady ? 7 : 0;
+      const fontsProgress = fontsReady ? 7 : 0;
+      const progress = Math.min(99, Math.floor(frameProgress + documentProgress + fontsProgress));
+      setLoadProgress(progress);
+
+      if (resolvedFrames >= TOTAL_FRAMES && documentReady && fontsReady) finish();
+    };
 
     for (let i = 1; i <= TOTAL_FRAMES; i++) {
       const img = new Image();
       const paddedIndex = i.toString().padStart(4, '0');
       img.src = `/webp_frames/frame_${paddedIndex}.webp`;
-      
-      const checkComplete = () => {
-        loadedCount++;
-        if (loadedCount === TOTAL_FRAMES) {
-          const elapsedTime = Date.now() - startTime;
-          const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
-          setTimeout(() => {
-            clearInterval(progressInterval);
-            setLoadProgress(100);
-            setTimeout(() => {
-              setIsLoaded(true);
-            }, 300);
-          }, remainingTime);
-        }
+
+      const settle = () => {
+        if (img.dataset.loaded === '1') return;
+        img.dataset.loaded = '1';
+        resolvedFrames++;
+        updateProgress();
       };
 
-      img.onload = checkComplete;
-      img.onerror = checkComplete;
-      
+      img.addEventListener('load', settle, { once: true });
+      img.addEventListener('error', settle, { once: true });
       images.push(img);
     }
-    
+
     imagesRef.current = images;
-    
+
+    const onDocumentReady = () => {
+      documentReady = true;
+      updateProgress();
+    };
+
+    if (documentReady) {
+      updateProgress();
+    } else {
+      window.addEventListener('load', onDocumentReady, { once: true });
+    }
+
+    if (document.fonts && !fontsReady) {
+      document.fonts.ready.then(() => {
+        fontsReady = true;
+        updateProgress();
+      });
+    } else {
+      updateProgress();
+    }
+
+    const watchdog = window.setTimeout(finish, 8000);
+
     return () => {
-      clearInterval(progressInterval);
+      window.clearTimeout(watchdog);
+      if (finishTimer !== undefined) window.clearTimeout(finishTimer);
+      window.removeEventListener('load', onDocumentReady);
       imagesRef.current = [];
     };
   }, []);

@@ -1,5 +1,80 @@
 @import "tailwindcss";
 
+.venom-preloader {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #161616;
+  user-select: none;
+  transform-origin: center;
+  will-change: opacity, transform;
+}
+
+.venom-preloader__wordmark {
+  width: min(91vw, 880px);
+  transform: translateY(-1.5vh);
+}
+
+.venom-preloader__wordmark svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.venom-preloader__base,
+.venom-preloader__liquid {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 126px;
+  font-weight: 900;
+  letter-spacing: -7px;
+}
+
+.venom-preloader__base {
+  fill: #3c3c3c;
+}
+
+.venom-preloader__liquid {
+  fill: #ffffff;
+}
+
+.venom-preloader__status {
+  position: absolute;
+  right: max(28px, 4vw);
+  bottom: max(24px, 5vh);
+  margin: 0;
+  color: #777777;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.075em;
+  line-height: 1;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .venom-preloader__wordmark { width: 94vw; }
+  .venom-preloader__base,
+  .venom-preloader__liquid {
+    font-size: 130px;
+    letter-spacing: -8px;
+  }
+  .venom-preloader__status {
+    right: 20px;
+    bottom: 22px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venom-preloader {
+    transition: none !important;
+  }
+}
+
 @theme {
   --color-dark: #050505;
   --font-sans: 'Inter', sans-serif;
