@@ -14,14 +14,19 @@
 }
 
 .venom-preloader__wordmark {
-  width: min(91vw, 880px);
-  transform: translateY(-1.5vh);
+  width: min(88vw, 980px);
 }
 
 .venom-preloader__wordmark svg {
   display: block;
   width: 100%;
+  height: auto;
+  max-height: calc(100vh - 150px);
   overflow: visible;
+}
+
+@supports (height: 100svh) {
+  .venom-preloader__wordmark svg { max-height: calc(100svh - 150px); }
 }
 
 .venom-preloader__base,
@@ -42,12 +47,12 @@
 
 .venom-preloader__status {
   position: absolute;
-  right: max(28px, 4vw);
-  bottom: max(24px, 5vh);
+  right: calc(20px + env(safe-area-inset-right, 0px));
+  bottom: calc(22px + env(safe-area-inset-bottom, 0px));
   margin: 0;
   color: #777777;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 11px;
+  font-size: clamp(10px, 0.9vw, 13px);
   font-weight: 500;
   letter-spacing: 0.075em;
   line-height: 1;

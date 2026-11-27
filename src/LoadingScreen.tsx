@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 const VIEWBOX_WIDTH = 1000;
@@ -7,10 +7,11 @@ const VIEWBOX_HEIGHT = 190;
 function liquidClipPath(progress: number, phase: number) {
   const amount = Math.max(0, Math.min(1, progress / 100));
   const line = VIEWBOX_HEIGHT * (1 - amount);
-  const amplitude = amount > 0 && amount < 1 ? 3.5 : 0;
+  const envelope = Math.max(0, Math.min(1, amount * 8, (1 - amount) * 8));
+  const amplitude = 10 * envelope;
   const points: string[] = [];
 
-  for (let x = 0; x <= VIEWBOX_WIDTH; x += 20) {
+  for (let x = 0; x <= VIEWBOX_WIDTH; x += 10) {
     const y = line + Math.sin((x / VIEWBOX_WIDTH) * Math.PI * 4 + phase) * amplitude;
     points.push(`${x} ${y.toFixed(2)}`);
   }
@@ -20,28 +21,38 @@ function liquidClipPath(progress: number, phase: number) {
 
 export function LoadingScreen({ progress }: { progress: number }) {
   const clipId = `venom-liquid-${useId().replace(/:/g, '')}`;
-  const reduceMotion = useReducedMotion();
-  const [phase, setPhase] = useState(0);
+  const reduceMotion = Boolean(
+    useReducedMotion() || window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
+  const wavePathRef = useRef<SVGPathElement>(null);
+  const progressRef = useRef(progress);
+  const safeProgress = Math.max(0, Math.min(100, Math.floor(progress)));
+
+  useEffect(() => {
+    progressRef.current = safeProgress;
+  }, [safeProgress]);
 
   useEffect(() => {
     if (reduceMotion) return;
 
     let frame = 0;
-    let previousUpdate = 0;
+    let lastPaint = 0;
 
-    const animate = (time: number) => {
-      if (time - previousUpdate >= 60) {
-        setPhase(time / 1000);
-        previousUpdate = time;
+    const animateWave = (time: number) => {
+      // Direct SVG attribute updates avoid React renders on every animation frame.
+      if (time - lastPaint >= 32) {
+        wavePathRef.current?.setAttribute(
+          'd',
+          liquidClipPath(progressRef.current, (time / 1000) * 1.2),
+        );
+        lastPaint = time;
       }
-      frame = requestAnimationFrame(animate);
+      frame = requestAnimationFrame(animateWave);
     };
 
-    frame = requestAnimationFrame(animate);
+    frame = requestAnimationFrame(animateWave);
     return () => cancelAnimationFrame(frame);
   }, [reduceMotion]);
-
-  const safeProgress = Math.max(0, Math.min(100, Math.floor(progress)));
 
   return (
     <motion.div
@@ -51,9 +62,9 @@ export function LoadingScreen({ progress }: { progress: number }) {
         ? { opacity: 0, pointerEvents: 'none', transition: { duration: 0 } }
         : {
             opacity: 0,
-            scale: 1.075,
+            scale: 1.06,
             pointerEvents: 'none',
-            transition: { duration: 0.76, ease: [0.22, 1, 0.36, 1] }
+            transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
           }}
       aria-label="Loading VenomSlayer portfolio"
       aria-live="polite"
@@ -67,7 +78,10 @@ export function LoadingScreen({ progress }: { progress: number }) {
         >
           <defs>
             <clipPath id={clipId}>
-              <path d={liquidClipPath(safeProgress, reduceMotion ? 0 : phase)} />
+              <path
+                ref={wavePathRef}
+                d={liquidClipPath(safeProgress, 0)}
+              />
             </clipPath>
           </defs>
           <text
@@ -92,9 +106,7 @@ export function LoadingScreen({ progress }: { progress: number }) {
         </svg>
       </div>
 
-      <p className="venom-preloader__status">
-        loading ... {safeProgress}%
-      </p>
+      <p className="venom-preloader__status">loading ... {safeProgress}%</p>
     </motion.div>
   );
 }
