@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Overlay } from './Overlay';
 import { LoadingScreen } from './LoadingScreen';
@@ -13,106 +13,9 @@ export default function App() {
   const requestRef = useRef<number | undefined>(undefined);
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [loadProgress, setLoadProgress] = useState(0);
-
-  useEffect(() => {
-    let resolvedFrames = 0;
-    let documentReady = document.readyState === 'complete';
-    let fontsReady = !document.fonts || document.fonts.status === 'loaded';
-    let finished = false;
-    let finishTimer: number | undefined;
-    let progressTimer: number | undefined;
-    const startedAt = performance.now();
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const minimumAnimationMs = reduceMotion ? 0 : 5200;
-    const images: HTMLImageElement[] = [];
-    const imageListeners: { image: HTMLImageElement; settle: () => void }[] = [];
-
-    const finish = () => {
-      if (finished) return;
-      finished = true;
-      window.clearTimeout(watchdog);
-      if (progressTimer !== undefined) window.clearInterval(progressTimer);
-      setLoadProgress(100);
-      finishTimer = window.setTimeout(() => setIsLoaded(true), reduceMotion ? 0 : 800);
-    };
-
-    const updateProgress = () => {
-      if (finished) return;
-      const frameProgress = (resolvedFrames / TOTAL_FRAMES) * 86;
-      const documentProgress = documentReady ? 7 : 0;
-      const fontsProgress = fontsReady ? 7 : 0;
-      const assetProgress = Math.min(100, frameProgress + documentProgress + fontsProgress);
-      const elapsedRatio = minimumAnimationMs === 0
-        ? 1
-        : Math.min(1, (performance.now() - startedAt) / minimumAnimationMs);
-      // Ease the visible rise at both ends while keeping the percentage truthful
-      // to the slower of actual settled assets and the minimum animation phase.
-      const elapsedProgress = (1 - Math.cos(Math.PI * elapsedRatio)) * 50;
-      const progress = Math.floor(Math.min(assetProgress, elapsedProgress));
-
-      setLoadProgress((current) => current === progress ? current : progress);
-      if (assetProgress >= 100 && elapsedProgress >= 100) finish();
-    };
-
-    for (let i = 1; i <= TOTAL_FRAMES; i++) {
-      const img = new Image();
-      const paddedIndex = i.toString().padStart(4, '0');
-      img.src = `/webp_frames/frame_${paddedIndex}.webp`;
-
-      const settle = () => {
-        if (img.dataset.loaded === '1') return;
-        img.dataset.loaded = '1';
-        resolvedFrames++;
-        updateProgress();
-      };
-
-      img.addEventListener('load', settle, { once: true });
-      img.addEventListener('error', settle, { once: true });
-      images.push(img);
-      imageListeners.push({ image: img, settle });
-    }
-
+  const completeLoading = useCallback((images: HTMLImageElement[]) => {
     imagesRef.current = images;
-
-    const onDocumentReady = () => {
-      documentReady = true;
-      updateProgress();
-    };
-
-    if (documentReady) {
-      updateProgress();
-    } else {
-      window.addEventListener('load', onDocumentReady, { once: true });
-    }
-
-    if (document.fonts && !fontsReady) {
-      document.fonts.ready.then(() => {
-        fontsReady = true;
-        updateProgress();
-      });
-    } else {
-      updateProgress();
-    }
-
-    // The label measures settled page/assets plus the minimum wave-display phase.
-    progressTimer = window.setInterval(updateProgress, 40);
-    const watchdog = window.setTimeout(finish, 8000);
-
-    return () => {
-      const completed = finished;
-      finished = true;
-      window.clearTimeout(watchdog);
-      if (finishTimer !== undefined) window.clearTimeout(finishTimer);
-      if (progressTimer !== undefined) window.clearInterval(progressTimer);
-      window.removeEventListener('load', onDocumentReady);
-      for (const { image, settle } of imageListeners) {
-        image.removeEventListener('load', settle);
-        image.removeEventListener('error', settle);
-        if (!completed) image.removeAttribute('src');
-      }
-      imagesRef.current = [];
-    };
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -209,7 +112,7 @@ export default function App() {
   return (
     <div className="relative w-full min-h-screen bg-black">
       <AnimatePresence>
-        {!isLoaded && <LoadingScreen progress={loadProgress} />}
+        {!isLoaded && <LoadingScreen onComplete={completeLoading} />}
       </AnimatePresence>
 
       {/* Background 3D Layer - Always render to show behind everything else */}
