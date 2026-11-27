@@ -45,19 +45,24 @@
   fill: #ffffff;
 }
 
-.venom-preloader__status {
-  position: absolute;
-  right: calc(20px + env(safe-area-inset-right, 0px));
-  bottom: calc(22px + env(safe-area-inset-bottom, 0px));
-  margin: 0;
-  color: #777777;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(10px, 0.9vw, 13px);
-  font-weight: 500;
-  letter-spacing: 0.075em;
-  line-height: 1;
-  text-transform: lowercase;
-  white-space: nowrap;
+.venom-preloader__wave-drift {
+  transform-box: fill-box;
+  transform-origin: 0 0;
+  animation: venom-liquid-drift 5.2s linear infinite;
+  will-change: transform;
+}
+
+.venom-preloader__wave-ridge {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 8;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+@keyframes venom-liquid-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 @media (max-width: 600px) {
@@ -67,17 +72,13 @@
     font-size: 130px;
     letter-spacing: -8px;
   }
-  .venom-preloader__status {
-    right: 20px;
-    bottom: 22px;
-    font-size: 10px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .venom-preloader {
     transition: none !important;
   }
+  .venom-preloader__wave-drift { animation: none; }
 }
 
 @theme {

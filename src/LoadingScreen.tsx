@@ -7,20 +7,16 @@ const VIEWBOX_WIDTH = 1000;
 const VIEWBOX_HEIGHT = 190;
 const MIN_LOADING_MS = 5200;
 const WATCHDOG_MS = 8000;
-const LIQUID_WAVE =
-  'M0 20 C60 20 65 4 125 4 C185 4 190 20 250 20 C310 20 315 36 375 36 C435 36 440 20 500 20 C560 20 565 4 625 4 C685 4 690 20 750 20 C810 20 815 36 875 36 C935 36 940 20 1000 20 L1000 190 L0 190 Z';
+const LIQUID_RIDGE =
+  'M0 20 C60 20 65 0 125 0 C185 0 190 20 250 20 C310 20 315 40 375 40 C435 40 440 20 500 20 C560 20 565 0 625 0 C685 0 690 20 750 20 C810 20 815 40 875 40 C935 40 940 20 1000 20';
 
 interface LoadingScreenProps {
   onComplete: (images: HTMLImageElement[]) => void;
 }
 
-function waveOffset(progress: number) {
-  const amount = Math.max(0, Math.min(1, progress / 100));
-  return VIEWBOX_HEIGHT + 20 - amount * (VIEWBOX_HEIGHT + 40);
-}
-
 export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const clipId = `venom-liquid-${useId().replace(/:/g, '')}`;
+  const wordmarkClipId = `${clipId}-wordmark`;
   const reduceMotion = Boolean(
     useReducedMotion() || window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
@@ -134,6 +130,9 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   }, [onComplete]);
 
   const safeProgress = Math.max(0, Math.min(100, Math.floor(progress)));
+  // Start with a visible shallow pool at the wordmark baseline so the wave is
+  // apparent from the first frame; the actual settled progress still controls the rise.
+  const fillLineY = VIEWBOX_HEIGHT * (1 - safeProgress / 100) - 72;
 
   return (
     <motion.div
@@ -159,22 +158,18 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         >
           <defs>
             <clipPath id={clipId}>
-              <g transform={`translate(0 ${waveOffset(safeProgress)})`}>
-                <g>
-                  {!reduceMotion && (
-                    <animateTransform
-                      attributeName="transform"
-                      type="translate"
-                      from="0 0"
-                      to={`-${VIEWBOX_WIDTH} 0`}
-                      dur="5.5s"
-                      repeatCount="indefinite"
-                    />
-                  )}
-                  <path d={LIQUID_WAVE} />
-                  <path d={LIQUID_WAVE} transform={`translate(${VIEWBOX_WIDTH} 0)`} />
-                </g>
-              </g>
+              <rect x="0" y={fillLineY} width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT - fillLineY} />
+            </clipPath>
+            <clipPath id={wordmarkClipId}>
+              <text
+                className="venom-preloader__base"
+                x="50%"
+                y="52%"
+                textAnchor="middle"
+                dominantBaseline="middle"
+              >
+                VenomSlayer
+              </text>
             </clipPath>
           </defs>
           <text
@@ -196,9 +191,20 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           >
             VenomSlayer
           </text>
+          <g clipPath={`url(#${wordmarkClipId})`} aria-hidden="true">
+            <g transform={`translate(0 ${fillLineY - 20})`}>
+              <g className={reduceMotion ? '' : 'venom-preloader__wave-drift'}>
+                <path className="venom-preloader__wave-ridge" d={LIQUID_RIDGE} />
+                <path
+                  className="venom-preloader__wave-ridge"
+                  d={LIQUID_RIDGE}
+                  transform={`translate(${VIEWBOX_WIDTH} 0)`}
+                />
+              </g>
+            </g>
+          </g>
         </svg>
       </div>
-      <p className="venom-preloader__status">loading ... {safeProgress}%</p>
     </motion.div>
   );
 }
